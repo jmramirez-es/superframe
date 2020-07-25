@@ -30,7 +30,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
+require_once("$CFG->libdir/formslib.php");
 /*
 
 Notice some rules that will keep plugin approvers happy when you want
@@ -61,7 +61,7 @@ class block_superframe extends block_base {
      * Add some text content to our block.
      */
     public function get_content() {
-        global $USER, $CFG;
+        global $USER, $CFG, $OUTPUT;
 
         // Do we have any content?
         if ($this->content !== null) {
@@ -92,7 +92,10 @@ class block_superframe extends block_base {
 				
 		// Add the blockid to the Moodle URL for the view page.
         $blockid = $this->instance->id;
-        $context = context_block::instance($blockid);
+		// Add courseid to the moodle block Superframe filter user 
+		$courseid = $this->page->course->id;
+		
+		$context = context_block::instance($blockid);
 
         // Check the capability.
         if (has_capability('block/superframe:seeviewpage', $context)) {
@@ -103,6 +106,14 @@ class block_superframe extends block_base {
                     get_string('viewlink', 'block_superframe')) . '</p>';
         }
 		
+		// check the capability to see the list of user.
+		if (has_capability('block/superframe:seeviewlistpage', $context)) {
+			//obtiene un listado de los usuarios que pueder ver el bloque
+			$users = self::get_course_users($courseid);
+			foreach ($users as $user) {
+				$this->content->text .='<li>' . $user->firstname . '</li>';
+			}
+		 }
 
         return $this->content; 
     }
@@ -130,5 +141,23 @@ class block_superframe extends block_base {
     function has_config() {
         return true;
     }
+	
+	/**
+	* consulta a la base de datos el id y primer nombre
+	*/
+	private static function get_course_users($courseid) {
+        global $DB;
 
+        $sql = "SELECT u.id, u.firstname
+                FROM {course} as c
+                JOIN {context} as x ON c.id = x.instanceid
+                JOIN {role_assignments} as r ON r.contextid = x.id
+                JOIN {user} AS u ON u.id = r.userid
+               WHERE c.id = :courseid
+                 AND r.roleid = :roleid";
+
+        $records = $DB->get_records_sql($sql, ['courseid' => $courseid, 'roleid' => 5]);
+
+        return $records;
+    }
 }

@@ -66,5 +66,15 @@ $capabilities = array(
             'student' => CAP_ALLOW,
             'guest' => CAP_PREVENT
         )
+    ),// Restrict access to view list user on superframe.
+    'block/superframe:seeviewlistpage' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+            'student' => CAP_ALLOW,
+            'guest' => CAP_PREVENT
+        )
     )
 );

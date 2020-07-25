@@ -37,6 +37,7 @@ $string['welcomeuser'] = 'Welcome {$a->firstname} {$a->lastname}';
 $string['superframe:addinstance'] = 'Add a new Super frame block';
 $string['superframe:myaddinstance'] = 'Add a new Super frame block to my moodle';
 $string['superframe:seeviewpage'] = 'Access the view page';
+$string['superframe:seeviewlistpage'] = 'View list page';
 
 // Modest statement.
 $string['message'] = 'I am a great developer';

@@ -25,7 +25,7 @@ require('../../config.php');
 
 $config = get_config('block_superframe');
 global $USER;
-global $DB;
+//global $DB;
 
 $blockid = required_param('blockid', PARAM_INT);
 $def_config = get_config('block_superframe');
@@ -41,12 +41,14 @@ $PAGE->set_pagelayout($def_config->pagelayout);
 
 $PAGE->set_title(get_string('pluginname', 'block_superframe'));
 $PAGE->navbar->add(get_string('pluginname', 'block_superframe'));
+
 require_login();
 
 
 // Check the users permissions to see the view page.
 $context = context_block::instance($blockid);
 require_capability('block/superframe:seeviewpage', $context);
+require_capability('block/superframe:seeviewlistpage', $context);
 
 
 // Get the instance configuration data from the database.
