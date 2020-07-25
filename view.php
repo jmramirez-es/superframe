@@ -44,6 +44,11 @@ $PAGE->navbar->add(get_string('pluginname', 'block_superframe'));
 require_login();
 
 
+// Check the users permissions to see the view page.
+$context = context_block::instance($blockid);
+require_capability('block/superframe:seeviewpage', $context);
+
+
 // Get the instance configuration data from the database.
 // It's stored as a base 64 encoded serialized string.
 $configdata = $DB->get_field('block_instances', 'configdata', ['id' => $blockid]);
@@ -81,12 +86,19 @@ switch ($config->size) {
         break;
 }
 
-echo '<p>' .$width .'</p>';
-echo '<p>' .$height .'</p>';
+
 
 // Start output to browser.
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('pluginname', 'block_superframe'), 5);
+
+
+// Content log.
+echo '<p>width: ' .$width .'</p>';
+echo '<p>height: ' .$height .'</p>';
+echo '<p>url: ' .$url .'</p>';
+echo '<br><br>';
+
 
 // profile picture
 $parameters = array('size' => 100);
