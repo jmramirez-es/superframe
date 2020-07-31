@@ -77,44 +77,28 @@ class block_superframe extends block_base {
         $this->content = new stdClass();
         $this->content->footer = '';
         $this->content->text = get_string('welcomeuser', 'block_superframe',
-                $USER);
-        //$this->content->text .= '<h3>' . get_string('message', 'block_superframe') . '</h3>';
-		// enlace en el bloque basico
-		//$this->content->text .= '<br><a href="' . $CFG->wwwroot . '/blocks/superframe/view.php">' .
-        //        get_string('viewlink', 'block_superframe') . '</a>';
+        $USER);
 
-		// Add the block id to the Moodle URL for the view page.
-		/*$blockid = $this->instance->id;
-		 $url = new moodle_url('/blocks/superframe/view.php', ['blockid' => $blockid]);
-		$this->content->text .= '<p>' . html_writer::link($url,
-        get_string('viewlink', 'block_superframe')) . '</p>'; */
-		
-				
 		// Add the blockid to the Moodle URL for the view page.
         $blockid = $this->instance->id;
-		// Add courseid to the moodle block Superframe filter user 
-		$courseid = $this->page->course->id;
-		
-		$context = context_block::instance($blockid);
+        $courseid = $this->page->course->id;
 
-        // Check the capability.
-        if (has_capability('block/superframe:seeviewpage', $context)) {
+        $context = context_block::instance($blockid);
+       
 
-            $url = new moodle_url('/blocks/superframe/view.php',
-                    ['blockid' => $blockid]);
-            $this->content->text .= '<p>' . html_writer::link($url,
-                    get_string('viewlink', 'block_superframe')) . '</p>';
+        //check the capability. list user
+        if (has_capability('block/superframe:seeviewlistpage', $context)){
+            $students = self::get_course_users($courseid);
         }
-		
-		// check the capability to see the list of user.
-		if (has_capability('block/superframe:seeviewlistpage', $context)) {
-			//obtiene un listado de los usuarios que pueder ver el bloque
-			$users = self::get_course_users($courseid);
-			foreach ($users as $user) {
-				$this->content->text .='<li>' . $user->firstname . '</li>';
-			}
-		 }
 
+        // Check the capability. view link
+        if (has_capability('block/superframe:seeviewpage', $context)) {
+           $renderer = $this->page->get_renderer('block_superframe');
+           $this->content->text= $renderer->fetch_block_content($blockid, $students, $courseid);     
+          
+        }
+        
+        
         return $this->content; 
     }
     /**
@@ -148,7 +132,7 @@ class block_superframe extends block_base {
 	private static function get_course_users($courseid) {
         global $DB;
 
-        $sql = "SELECT u.id, u.firstname
+        $sql = "SELECT u.id, u.firstname,u.picture
                 FROM {course} as c
                 JOIN {context} as x ON c.id = x.instanceid
                 JOIN {role_assignments} as r ON r.contextid = x.id

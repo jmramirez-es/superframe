@@ -22,25 +22,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require('../../config.php');
-
-$config = get_config('block_superframe');
 global $USER;
-//global $DB;
 
 $blockid = required_param('blockid', PARAM_INT);
+$courseid  = required_param('courseid', PARAM_INT);
+
 $def_config = get_config('block_superframe');
 
 $PAGE->set_course($COURSE);
 $PAGE->set_url('/blocks/superframe/view.php');
 $PAGE->set_heading($SITE->fullname);
-
 $PAGE->set_pagelayout($def_config->pagelayout);
-
-//$PAGE->set_pagelayout($config->pagelayout);
-//$PAGE->set_pagelayout('course');
-
 $PAGE->set_title(get_string('pluginname', 'block_superframe'));
 $PAGE->navbar->add(get_string('pluginname', 'block_superframe'));
+
 
 require_login();
 
@@ -72,7 +67,7 @@ switch ($config->size) {
     case 'custom':
         $width = $def_config->width;
         $height = $def_config->height;
-		
+
         break;
     case 'small' :
         $width = 360;
@@ -88,53 +83,5 @@ switch ($config->size) {
         break;
 }
 
-
-
-// Start output to browser.
-echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('pluginname', 'block_superframe'), 5);
-
-
-// Content log.
-echo '<p>width: ' .$width .'</p>';
-echo '<p>height: ' .$height .'</p>';
-echo '<p>url: ' .$url .'</p>';
-echo '<br><br>';
-
-
-// profile picture
-$parameters = array('size' => 100);
-echo $OUTPUT->user_picture($USER, $parameters);
-//full name
-echo '' . fullname($USER) . '</br>';
-
-// Build and display an iframe.
-/* $url = 'https://quizlet.com/132695231/scatter/embed';
-$width = '600px';
-$height = '400px'; 
-// build and display an iframe.
-$attributes = ['src' => $url,
-               'width' => $width,
-               'height' => $height];
-*/
-
-// build and display an iframe.
-/* $attributes = ['src' => $config->url,
-               'width' => $config->width,
-               'height' => $config->height]; */
-			   
-// Build and display an iframe.
-$attributes = ['src' => $url,
-               'width' => $width,
-               'height' => $height];
-			   
-		   
-			   
-echo html_writer::start_tag('iframe', $attributes);
-echo html_writer::end_tag('iframe');
-
-// Dummy content.
-//echo 'I am some dummy content, get rid of me fast';
-
-//send footer out to browser
-echo $OUTPUT->footer();
+$renderer = $PAGE->get_renderer('block_superframe');
+$renderer->display_view_page($url, $width, $height, $courseid);
