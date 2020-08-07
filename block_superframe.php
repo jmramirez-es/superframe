@@ -98,7 +98,7 @@ class block_superframe extends block_base {
           
            // Add a popup link to the block table.
            $popurl = new moodle_url('/blocks/superframe/block_data.php');
-           $poplink = $this->output->action_link('/blocks/superframe/block_superframe', get_string('poptext', 'block_superframe'), new popup_action('click', $popurl));     
+           $poplink = $this->output->action_link($url, get_string('poptext', 'block_superframe'), new popup_action('click', $popurl));     
 
         }
         
