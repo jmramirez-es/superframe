@@ -70,4 +70,14 @@ $string['small'] = 'Small';
 $string['medium'] = 'Medium';
 $string['large'] = 'Large';
 
+// pop url
+$string['poplink'] = 'popup url';
+$string['poptext'] = 'Block list(popup)';
+
+
+//show table
+$string['blockid'] = 'Blocks ID';
+$string['blockname'] =  'Blocks name';
+$string['course'] = 'Course';
+$string['catname'] = 'CAT name';
 

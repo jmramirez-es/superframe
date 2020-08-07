@@ -75,7 +75,7 @@ class block_superframe_renderer extends plugin_renderer_base
              $studentlist['pic'] = $this->output->user_picture($rs);
              $data->students[] = $studentlist;
         }
-
+        
         //asignamos el nombre completo a la variable username
         $username = fullname($USER);
         //se carga desde los strings de multilenguaje el mensaje de bienvenida
@@ -84,10 +84,47 @@ class block_superframe_renderer extends plugin_renderer_base
         $data->url = new moodle_url('/blocks/superframe/view.php', ['blockid' => $blockid, 'courseid' => $courseid]);
         // se carga desde los strings de multilenguaje el mensaje texto del link
         $data->linktext = get_string('viewlink', 'block_superframe');
-        // asigna el array de estudiantes a la variable students
-        //$data->students = $studentlist;
+        
+        //se añade popup url que muestre el block table (listado de bbdd de usos del bloque.)
+        $data->popurl = new moodle_url('/blocks/superframe/block_data.php');
+        // se carga desde los strings de multilenguaje el mensaje texto del link
+        $data->poptext   = get_string('poptext', 'block_superframe');
+
 
         return $this->render_from_template('block_superframe/block', $data);
    }
+
+   /**
+     * Function to display a table of records
+     * @param array the records to display.
+     * @return none.
+     */
+    public function display_block_table($records) {
+        // Prepare the data for the template.
+        $table = new stdClass();
+        // Table headers.
+        $table->tableheaders = [
+                get_string('blockid', 'block_superframe'),
+                get_string('blockname', 'block_superframe'),
+                get_string('course', 'block_superframe'),
+                get_string('catname', 'block_superframe'),
+        ];
+        // Build the data rows.
+        foreach ($records as $record) {
+            $data = array();
+            $data[] = $record->id;
+            $data[] = $record->blockname;
+            $data[] = $record->shortname;
+            $data[] = $record->catname;
+            $table->tabledata[] = $data;
+        }
+        // Start output to browser.
+        echo $this->output->header();
+        // Call our template to render the data.
+        echo $this->render_from_template(
+                'block_superframe/block_table', $table);
+        // Finish the page.
+        echo $this->output->footer();
+    }
 
 }
