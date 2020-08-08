@@ -34,4 +34,4 @@ $PAGE->set_title(get_string('pluginname', 'block_superframe'));
 // Let's get some data about blocks.
 $records = block_data::fetch_block_data();
 $renderer = $PAGE->get_renderer('block_superframe');
-$renderer->display_block_table($records);
+echo $renderer->display_block_table($records);

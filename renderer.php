@@ -88,7 +88,16 @@ class block_superframe_renderer extends plugin_renderer_base
         //se añade popup url que muestre el block table (listado de bbdd de usos del bloque.)
         $data->popurl = new moodle_url('/blocks/superframe/block_data.php');
         // se carga desde los strings de multilenguaje el mensaje texto del link
-        $data->poptext   = get_string('poptext', 'block_superframe');
+        $data->poptext = get_string('poptext', 'block_superframe');
+
+        //$data->tableurl = new moodle_url('/blocks/superframe/tablemanager.php');
+        //$data->tabletext = get_string('tabletext', 'block_superframe');
+
+
+        // Add a link to the popup page:
+        //$data->popurl = new moodle_url('/blocks/superframe/block_data.php');
+        //$data->poplink = $this->output->action_link($popurl, get_string('poptext', 'block_superframe'), new popup_action('click', $popurl));
+
 
 
         return $this->render_from_template('block_superframe/block', $data);
@@ -122,7 +131,7 @@ class block_superframe_renderer extends plugin_renderer_base
         echo $this->output->header();
         // Call our template to render the data.
         echo $this->render_from_template(
-                'block_superframe/block_table', $table);
+                'block_superframe/block_data', $table);
         // Finish the page.
         echo $this->output->footer();
     }

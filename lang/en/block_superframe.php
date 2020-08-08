@@ -71,8 +71,8 @@ $string['medium'] = 'Medium';
 $string['large'] = 'Large';
 
 // pop url
-$string['poplink'] = 'popup url';
-$string['poptext'] = 'Block list(popup)';
+$string['poplink'] = 'Popup url';
+$string['poptext'] = 'Block list(new page)';
 
 
 //show table
