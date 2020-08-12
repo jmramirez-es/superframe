@@ -25,7 +25,7 @@
 class block_superframe_renderer extends plugin_renderer_base 
 {
 
-    function display_view_page($url, $width, $height, $courseid)
+    function display_view_page($url, $width, $height, $courseid ,$blockid)
     {
         global $USER;
 
@@ -37,13 +37,34 @@ class block_superframe_renderer extends plugin_renderer_base
         $data->height = $height;
         $data->width = $width;
         $data->courseid = $courseid;
-        
+        $data->userPicture = $this->user_picture($USER);
         $data->username = fullname($USER);
 
         //return link 
         $data->returnlink = new moodle_url('/course/view.php',
                 ['id' => $courseid]);
         $data->returntext = get_string('returncourse', 'block_superframe');
+        
+       // Text for the links and the size parameter.
+       $strings = array();
+       $strings[] = get_string('custom', 'block_superframe');
+       $strings[] = get_string('small', 'block_superframe');
+       $strings[] = get_string('medium', 'block_superframe');
+       $strings[] = get_string('large', 'block_superframe');
+
+       // Create the data structure for the links.
+       $links = array();
+       $link = new moodle_url('/blocks/superframe/view.php', ['courseid' => $courseid,
+               'blockid' => $blockid]);
+       
+       foreach ($strings as $string) {
+           $links[] = ['link' => $link->out(false, ['size' => $string]),
+                   'text' => $string];
+       }
+
+       $data->linkdata = $links;
+
+
 
         // Start output to browser.
         echo $this->output->header();
@@ -80,6 +101,8 @@ class block_superframe_renderer extends plugin_renderer_base
         $username = fullname($USER);
         //se carga desde los strings de multilenguaje el mensaje de bienvenida
         $data->welcome = get_string('welcomeuser', 'block_superframe', $USER);
+        // icon del usuario
+        $data->userPicture = $this->user_picture($USER);
         //se guarda la url que carga el blocks mediante moodle_url y se almacena en la variable data->url
         $data->url = new moodle_url('/blocks/superframe/view.php', ['blockid' => $blockid, 'courseid' => $courseid]);
         // se carga desde los strings de multilenguaje el mensaje texto del link
@@ -89,10 +112,9 @@ class block_superframe_renderer extends plugin_renderer_base
         $data->popurl = new moodle_url('/blocks/superframe/block_data.php');
         // se carga desde los strings de multilenguaje el mensaje texto del link
         $data->poptext = get_string('poptext', 'block_superframe');
-
-        //$data->tableurl = new moodle_url('/blocks/superframe/tablemanager.php');
-        //$data->tabletext = get_string('tabletext', 'block_superframe');
-
+        // se añade una url para cargar un formularios de los datos.
+        $data->tableurl = new moodle_url('/blocks/superframe/tablemanager.php');
+        $data->tabletext = get_string('tabletext', 'block_superframe');
 
         // Add a link to the popup page:
         //$data->popurl = new moodle_url('/blocks/superframe/block_data.php');
