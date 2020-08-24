@@ -37,8 +37,13 @@
     <ul class="nav flex-column">
         <li class="nav-item"><a href="{{{url}}}">{{linktext}}</a></li>
         <li class="nav-item"><a href={{{popurl}}} target="_blank"> {{poptext}}</a></li>
-        <li class="nav-item"><a href="{{{tableurl}}}">{{tabletext}}</a></li>
+        <li class="nav-item"><a href="{{{tableurl}}}">{{tabletext}}</a></li>        
      </ul>
+    <br>
+    <p> 
+         {{#str}} lastaccess, block_superframe {{/str}}
+         {{#userdate}} {{lastaccess}}, %d %B %Y {{/userdate}}
+    </p>
     <br>
     {{#students}}
       <ul class="list-group">    

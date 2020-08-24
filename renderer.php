@@ -127,6 +127,11 @@ class block_superframe_renderer extends plugin_renderer_base
         $data->tableurl = new moodle_url('/blocks/superframe/tablemanager.php');
         $data->tabletext = get_string('tabletext', 'block_superframe');
 
+        // last accesss
+        // hace una consulta a la bbdd para obtener la fecha del ultimo acceso.
+        $data->lastaccess = $DB->get_field('user_lastaccess', 'timeaccess',
+                ['courseid' => $courseid, 'userid' => $USER->id], MUST_EXIST);
+     
         // Add a link to the popup page:
         //$data->popurl = new moodle_url('/blocks/superframe/block_data.php');
         //$data->poplink = $this->output->action_link($popurl, get_string('poptext', 'block_superframe'), new popup_action('click', $popurl));

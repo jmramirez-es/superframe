@@ -88,3 +88,11 @@ $string['tabletext'] = 'Table editing';
 $string['userlink'] = 'Installed blocks';
 
 $string['about'] = 'About superframe';
+
+// event
+$string['pageviewed'] = 'page viewed';
+
+//last access
+$string['lastaccess'] = 'Last access: ';
+$string['formattime'] = '% d% B% Y';
+
